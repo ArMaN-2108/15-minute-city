@@ -125,7 +125,7 @@ const TermsOfService = () => {
 <footer className="w-full py-12 px-8 bg-slate-900 dark:bg-black flex flex-col items-center gap-6 w-full md:grid md:grid-cols-3">
 <div className="flex flex-col items-center md:items-start">
 <div className="text-emerald-400 font-bold text-xl tracking-tight">15 MINUTE CITY</div>
-<div className="text-slate-500 text-xs mt-1">Built by <span className="font-bold text-emerald-400">Arman</span></div>
+<div className="text-slate-500 text-xs mt-1">Built by <a href="https://www.linkedin.com/in/arman-shk/" target="_blank" rel="noopener noreferrer" className="font-bold text-emerald-400 hover:underline">Arman</a></div>
 </div>
 <div className="flex flex-wrap justify-center gap-8">
 <Link className="text-sm font-medium Inter uppercase tracking-widest text-slate-400 hover:text-emerald-300 transition-colors underline-offset-4 hover:underline" to="/privacy">Privacy</Link>

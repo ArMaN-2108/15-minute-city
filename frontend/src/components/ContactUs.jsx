@@ -102,7 +102,7 @@ const ContactUs = () => {
                       <span className="material-symbols-outlined text-2xl group-hover:scale-110 transition-transform">person</span>
                       <span className="text-[10px] font-bold tracking-widest uppercase text-center">Portfolio</span>
                     </a>
-                    <a className="group bg-surface-container-low p-6 rounded-2xl flex flex-col items-center justify-center gap-3 hover:bg-primary hover:text-white transition-all duration-300" href="https://github.com/arman-shk" target="_blank" rel="noopener noreferrer">
+                    <a className="group bg-surface-container-low p-6 rounded-2xl flex flex-col items-center justify-center gap-3 hover:bg-primary hover:text-white transition-all duration-300" href="https://github.com/ArMaN-2108" target="_blank" rel="noopener noreferrer">
                       <span className="material-symbols-outlined text-2xl group-hover:scale-110 transition-transform">code</span>
                       <span className="text-[10px] font-bold tracking-widest uppercase text-center">Github</span>
                     </a>
