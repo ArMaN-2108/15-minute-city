@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>15MinCity | Urban Strategy Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-variant": "#c3ecd7",
+                        "error": "#ba1a1a",
+                        "secondary-fixed": "#baeed1",
+                        "on-secondary": "#ffffff",
+                        "on-primary-container": "#00422b",
+                        "secondary": "#376850",
+                        "on-secondary-container": "#3c6c54",
+                        "on-background": "#002115",
+                        "surface-dim": "#bbe3cf",
+                        "outline": "#6c7a71",
+                        "on-error": "#ffffff",
+                        "primary": "#006c49",
+                        "on-tertiary-fixed-variant": "#842225",
+                        "tertiary": "#a43a3a",
+                        "surface-container": "#cef7e2",
+                        "primary-fixed-dim": "#4edea3",
+                        "on-tertiary-fixed": "#410005",
+                        "surface-container-lowest": "#ffffff",
+                        "primary-fixed": "#6ffbbe",
+                        "tertiary-fixed": "#ffdad7",
+                        "surface-tint": "#006c49",
+                        "tertiary-container": "#fc7c78",
+                        "surface-container-high": "#c9f1dd",
+                        "on-secondary-fixed-variant": "#1e4f3a",
+                        "on-primary": "#ffffff",
+                        "surface-container-low": "#d4fde8",
+                        "primary-container": "#10b981",
+                        "on-tertiary-container": "#711419",
+                        "on-primary-fixed": "#002113",
+                        "tertiary-fixed-dim": "#ffb3af",
+                        "surface-container-highest": "#c3ecd7",
+                        "surface-bright": "#e7fff1",
+                        "inverse-primary": "#4edea3",
+                        "on-tertiary": "#ffffff",
+                        "surface": "#e7fff1",
+                        "secondary-container": "#b7ebce",
+                        "on-surface-variant": "#3c4a42",
+                        "on-error-container": "#93000a",
+                        "background": "#e7fff1",
+                        "inverse-surface": "#113729",
+                        "secondary-fixed-dim": "#9ed2b5",
+                        "on-primary-fixed-variant": "#005236",
+                        "outline-variant": "#bbcabf",
+                        "on-surface": "#002115",
+                        "inverse-on-surface": "#d1fae5",
+                        "on-secondary-fixed": "#002113",
+                        "error-container": "#ffdad6"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "1rem",
+                        "lg": "2rem",
+                        "xl": "3rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Inter"],
+                        "display": ["Inter"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .radar-hex {
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #e7fff1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #10b981;
+            border-radius: 10px;
+        }
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="bg-surface font-body text-on-surface flex flex-col min-h-screen">
+<!-- Main Wrapper for Sidebar + Content -->
+<div class="flex flex-grow w-full overflow-hidden">
+<!-- SideNavBar Shell -->
+<aside class="w-72 bg-emerald-50 dark:bg-slate-950 flex flex-col py-10 gap-2 shadow-xl z-50 overflow-y-auto">
+<div class="px-8 mb-10">
+<img alt="15MinCity Logo" class="h-20 w-auto mb-6 object-contain invert dark:invert-0" src="https://lh3.googleusercontent.com/aida/ADBb0uj2DY52_4z88X9TfoBAYQJPkw4EVTassTVTBmzpvY6n2cYvrMCh2o-YRg0H2cnvtIiPtB4R3MimIRY7abNBwH6RjUs-2gh7sqgnytcAVfmqTqzdV1maNuiSskcdWr5_n8piyQC6mmWwc8s0PIp6Cy1GG93PyZ-Iz4EtSHHKL-Wf0zaMXnD_zFhxEXpbgTt_63T3-01-lG-hB5CKxAxnFGGtsULN54LtGPHgJWmO7oSyJYLMUhc43BTc2-Qgx126aC3xAPwrlIyJVA"/>
+</div>
+<nav class="flex-grow flex flex-col gap-2 px-4">
+<!-- Active Tab: Command Center -->
+<a class="flex items-center gap-4 bg-gradient-to-r from-primary to-primary-container text-white rounded-full px-6 py-4 shadow-lg shadow-primary/20 cursor-pointer active:brightness-90 transition-all duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-medium text-sm">Dashboard</span>
+</a>
+</nav>
+</aside>
+<!-- Content Area -->
+<div class="flex-grow flex flex-col min-w-0 overflow-y-auto">
+<!-- TopNavBar Shell -->
+<header class="flex justify-between items-center px-8 h-20 w-full bg-emerald-50/70 backdrop-blur-xl sticky top-0 z-40 shadow-[0_20px_40px_-10px_rgba(0,33,21,0.06)]">
+<div class="flex items-center gap-6">
+<div class="relative">
+<span class="absolute inset-y-0 left-4 flex items-center text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="search">search</span>
+</span>
+<input class="pl-12 pr-6 py-2.5 bg-surface-container-lowest rounded-full border-none focus:ring-2 focus:ring-primary/20 w-64 text-sm font-medium transition-all" placeholder="Search District Grid..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex gap-4">
+<button class="p-2 text-on-surface-variant hover:bg-emerald-100/50 rounded-full transition-all active:scale-90">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:bg-emerald-100/50 rounded-full transition-all active:scale-90">
+<span class="material-symbols-outlined" data-icon="military_tech">military_tech</span>
+</button>
+</div>
+<div class="h-10 w-[1px] bg-outline-variant/30"></div>
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full border-2 border-primary bg-surface-container-high flex items-center justify-center overflow-hidden">
+<img alt="Urban Strategist Avatar" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD2_zehRmSy_PUrZr5WLvCJzFmFC6gWxZemA19GVeFJgTo-XW00t7u0BRlbPR95q-9pOtMT5Uy3Ht6Py4jG5Vyl3nRaL0twG6vGbdTF_LMZ_KGroZkhX83QfbmzojcplKFmBT6zMVpjWHZXUqtmeQmUw4F-gM2ECclltRVgudGSjVzddMrY8I2LPrGN1NyeZj3edts9yp8tUCGSuW8t9UuaFa4yQRywSUTclFwqoq5j91atkHoKv_0MULtjRPnrFazayUj4nr8Y94o"/>
+</div>
+</div>
+</div>
+</header>
+<!-- Canvas Area -->
+<div class="p-8 space-y-8 max-w-[1400px] mx-auto w-full">
+<!-- Hero Row: Livability XP & Stats Radar -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+<!-- Livability XP Circle -->
+<div class="lg:col-span-4 bg-surface-container-lowest p-10 rounded-xl flex flex-col items-center justify-center relative overflow-hidden shadow-sm">
+<div class="absolute -top-20 -right-20 w-64 h-64 bg-primary/5 rounded-full blur-3xl"></div>
+<h3 class="text-xl font-bold text-on-surface mb-8">Livables</h3>
+<div class="relative">
+<svg class="w-48 h-48 transform -rotate-90">
+<circle class="text-surface-container" cx="96" cy="96" fill="transparent" r="88" stroke="currentColor" stroke-width="12"></circle>
+<circle class="text-primary transition-all duration-1000" cx="96" cy="96" fill="transparent" r="88" stroke="currentColor" stroke-dasharray="552.92" stroke-dashoffset="82.93" stroke-width="12"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="text-5xl font-extrabold text-on-surface">8.5</span>
+<span class="text-on-surface-variant font-bold">/ 10 Livables</span>
+</div>
+</div>
+</div>
+<!-- City Ability Radar -->
+<div class="lg:col-span-8 bg-surface-container-low p-10 rounded-xl flex flex-col md:flex-row items-center gap-10 shadow-sm">
+<div class="flex-grow">
+<h2 class="text-2xl font-headline font-bold text-on-surface mb-2">City Ability Radar</h2>
+<p class="text-on-surface-variant text-sm max-w-sm mb-8">Comprehensive district performance across four key urban pillars. Optimize your grid to reach Paragon status.</p>
+<div class="space-y-4">
+<div class="flex items-center justify-between">
+<span class="text-sm font-bold flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-emerald-500"></span> Mobility</span>
+<span class="text-sm font-mono font-bold text-primary">92%</span>
+</div>
+<div class="flex items-center justify-between">
+<span class="text-sm font-bold flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-blue-500"></span> Commerce</span>
+<span class="text-sm font-mono font-bold text-primary">78%</span>
+</div>
+<div class="flex items-center justify-between">
+<span class="text-sm font-bold flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-amber-500"></span> Education</span>
+<span class="text-sm font-mono font-bold text-primary">85%</span>
+</div>
+<div class="flex items-center justify-between">
+<span class="text-sm font-bold flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-sky-500"></span> Ecology</span>
+<span class="text-sm font-mono font-bold text-primary">96%</span>
+</div>
+</div>
+</div>
+<div class="relative w-64 h-64 flex items-center justify-center">
+<div class="absolute inset-0 radar-hex border-2 border-primary/20 bg-primary/5"></div>
+<div class="absolute inset-4 radar-hex border-2 border-primary/10"></div>
+<div class="absolute inset-8 radar-hex border-2 border-primary/5"></div>
+<div class="absolute top-2 left-1/2 -translate-x-1/2 flex flex-col items-center">
+<span class="material-symbols-outlined text-emerald-600 scale-75" data-icon="forest" style="font-variation-settings: 'FILL' 1;">forest</span>
+</div>
+<div class="absolute bottom-2 left-1/2 -translate-x-1/2 flex flex-col items-center">
+<span class="material-symbols-outlined text-blue-600 scale-75" data-icon="directions_bus" style="font-variation-settings: 'FILL' 1;">directions_bus</span>
+</div>
+<div class="absolute top-1/2 -left-4 -translate-y-1/2 flex flex-col items-center">
+<span class="material-symbols-outlined text-amber-600 scale-75" data-icon="school" style="font-variation-settings: 'FILL' 1;">school</span>
+</div>
+<div class="absolute top-1/2 -right-4 -translate-y-1/2 flex flex-col items-center">
+<span class="material-symbols-outlined text-sky-600 scale-75" data-icon="shopping_cart" style="font-variation-settings: 'FILL' 1;">shopping_cart</span>
+</div>
+<svg class="w-full h-full drop-shadow-2xl" viewbox="0 0 100 100">
+<polygon fill="rgba(16, 185, 129, 0.4)" points="50,5 95,50 50,95 10,50" stroke="#006c49" stroke-width="2"></polygon>
+<circle cx="50" cy="5" fill="#006c49" r="3"></circle>
+<circle cx="95" cy="50" fill="#006c49" r="3"></circle>
+<circle cx="50" cy="95" fill="#006c49" r="3"></circle>
+<circle cx="10" cy="50" fill="#006c49" r="3"></circle>
+</svg>
+</div>
+</div>
+</div>
+<!-- Second Row: Amenities Proximity & Map -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+<!-- Amenities Proximity Card -->
+<div class="lg:col-span-4 space-y-6">
+<div class="bg-surface-container-lowest p-8 rounded-xl shadow-sm border-l-4 border-primary h-full">
+<div class="flex items-center justify-between mb-8">
+<h3 class="text-xl font-bold text-on-surface">Amenities Proximity</h3>
+<span class="text-[10px] font-bold px-3 py-1 bg-primary/10 text-primary rounded-full uppercase tracking-tighter">Live Scan</span>
+</div>
+<div class="space-y-4">
+<!-- Supermarket -->
+<div class="group flex items-center justify-between p-4 rounded-xl bg-surface-container-low hover:bg-primary hover:text-white transition-all cursor-pointer">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary group-hover:text-white" data-icon="shopping_cart">shopping_cart</span>
+<div>
+<p class="text-sm font-bold">Supermarket</p>
+<p class="text-[10px] opacity-70">Nearby Express</p>
+</div>
+</div>
+<span class="font-mono font-bold text-sm">300m</span>
+</div>
+<!-- Train Station -->
+<div class="group flex items-center justify-between p-4 rounded-xl bg-surface-container-low hover:bg-primary hover:text-white transition-all cursor-pointer">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary group-hover:text-white" data-icon="train">train</span>
+<div>
+<p class="text-sm font-bold">Train Station</p>
+<p class="text-[10px] opacity-70">District Hub</p>
+</div>
+</div>
+<span class="font-mono font-bold text-sm">450m</span>
+</div>
+<!-- Local Park -->
+<div class="group flex items-center justify-between p-4 rounded-xl bg-surface-container-low hover:bg-primary hover:text-white transition-all cursor-pointer">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary group-hover:text-white" data-icon="park">park</span>
+<div>
+<p class="text-sm font-bold">Local Park</p>
+<p class="text-[10px] opacity-70">Green Reserve</p>
+</div>
+</div>
+<span class="font-mono font-bold text-sm">120m</span>
+</div>
+<!-- Primary School -->
+<div class="group flex items-center justify-between p-4 rounded-xl bg-surface-container-low hover:bg-primary hover:text-white transition-all cursor-pointer">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary group-hover:text-white" data-icon="school">school</span>
+<div>
+<p class="text-sm font-bold">Primary School</p>
+<p class="text-[10px] opacity-70">Education Zone</p>
+</div>
+</div>
+<span class="font-mono font-bold text-sm">800m</span>
+</div>
+</div>
+<button class="w-full mt-8 py-3 text-sm font-bold text-on-surface-variant hover:text-primary transition-colors flex items-center justify-center gap-2">
+                                View Detailed Analysis
+                                <span class="material-symbols-outlined text-lg" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Enhanced Interactive Amenities Map -->
+<div class="lg:col-span-8 relative rounded-xl overflow-hidden shadow-xl bg-slate-900 h-[500px] flex flex-col md:flex-row">
+<!-- Left Side: Amenities List & Proximity -->
+<div class="w-full md:w-72 bg-slate-800/80 backdrop-blur-xl border-r border-slate-700/50 p-6 z-10 overflow-y-auto scrollbar-hide">
+<div class="mb-6">
+<h4 class="text-white font-bold text-lg flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-xl" data-icon="location_on">location_on</span>
+                                    Postcode: E14 9
+                                </h4>
+<p class="text-slate-400 text-[10px] uppercase font-bold tracking-widest mt-1">Isle of Dogs District</p>
+</div>
+<div class="space-y-5">
+<div>
+<p class="text-primary-fixed-dim text-[10px] font-bold uppercase mb-3">Amenities Proximity</p>
+<div class="space-y-3">
+<div class="flex items-center justify-between bg-slate-700/30 p-2 rounded-lg border border-slate-600/20">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-blue-400 text-lg" data-icon="shopping_cart">shopping_cart</span>
+<span class="text-xs text-white font-medium">Supermarket</span>
+</div>
+<span class="text-[10px] font-mono text-blue-300">300m</span>
+</div>
+<div class="flex items-center justify-between bg-slate-700/30 p-2 rounded-lg border border-slate-600/20">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-amber-400 text-lg" data-icon="train">train</span>
+<span class="text-xs text-white font-medium">Train Station</span>
+</div>
+<span class="text-[10px] font-mono text-amber-300">450m</span>
+</div>
+<div class="flex items-center justify-between bg-slate-700/30 p-2 rounded-lg border border-slate-600/20">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-emerald-400 text-lg" data-icon="park">park</span>
+<span class="text-xs text-white font-medium">Local Park</span>
+</div>
+<span class="text-[10px] font-mono text-emerald-300">120m</span>
+</div>
+<div class="flex items-center justify-between bg-slate-700/30 p-2 rounded-lg border border-slate-600/20">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-rose-400 text-lg" data-icon="school">school</span>
+<span class="text-xs text-white font-medium">Primary School</span>
+</div>
+<span class="text-[10px] font-mono text-rose-300">800m</span>
+</div>
+</div>
+</div>
+<div class="pt-4 border-t border-slate-700/50">
+<p class="text-primary-fixed-dim text-[10px] font-bold uppercase mb-3">Live Insights</p>
+<div class="space-y-2">
+<div class="flex gap-3">
+<div class="w-1.5 h-1.5 rounded-full bg-emerald-400 mt-1.5 shrink-0 animate-pulse"></div>
+<p class="text-[10px] text-slate-300 leading-relaxed"><span class="text-white font-bold">Traffic:</span> Low levels on Westferry Rd.</p>
+</div>
+<div class="flex gap-3">
+<div class="w-1.5 h-1.5 rounded-full bg-amber-400 mt-1.5 shrink-0"></div>
+<p class="text-[10px] text-slate-300 leading-relaxed"><span class="text-white font-bold">Park usage:</span> High activity near waterfront.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Side: The Map Area -->
+<div class="flex-grow relative bg-slate-900 group">
+<!-- High contrast map background -->
+<div class="absolute inset-0 bg-cover bg-center grayscale opacity-30 mix-blend-lighten" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAP0LnoTOfV5dios3UXIGT9pecu5jqSR9HWLKkNndnr2OyoiumceFiAQEvzZXL2iPDgiE41Y1RF1_BF97X11bgQUC1pXUsrPTMZdA8s-XPnM_XWhWxm9xNVwwj_hP-HFqiihsHaxITqFc-vti-f_NewAMPjV0yvj2C9QRQjmouAHeYV6U-6_dGMVxjxy6s2EbnRXGKc6msNhMQM_NtJldaSVUejnDYgStuIAXXf7kYVuWlGvuwWvAjSfSfzI4BFcJDrIYElnRotOEA')"></div>
+<!-- Scanner/Grid effect -->
+<div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,transparent_0%,rgba(0,0,0,0.4)_100%)]"></div>
+<!-- Map Markers -->
+<div class="absolute top-1/4 left-1/3 flex flex-col items-center group/pin">
+<div class="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center shadow-[0_0_15px_rgba(59,130,246,0.5)] border-2 border-white scale-90 hover:scale-110 transition-transform cursor-pointer">
+<span class="material-symbols-outlined text-sm" data-icon="shopping_cart">shopping_cart</span>
+</div>
+<div class="bg-slate-800 text-white text-[9px] font-bold px-2 py-0.5 rounded mt-1 opacity-0 group-hover/pin:opacity-100 transition-opacity whitespace-nowrap">Express Market</div>
+</div>
+<div class="absolute top-1/2 right-1/4 flex flex-col items-center group/pin">
+<div class="w-8 h-8 bg-amber-500 text-white rounded-full flex items-center justify-center shadow-[0_0_15px_rgba(245,158,11,0.5)] border-2 border-white scale-90 hover:scale-110 transition-transform cursor-pointer">
+<span class="material-symbols-outlined text-sm" data-icon="train">train</span>
+</div>
+<div class="bg-slate-800 text-white text-[9px] font-bold px-2 py-0.5 rounded mt-1 opacity-0 group-hover/pin:opacity-100 transition-opacity whitespace-nowrap">Crossharbour DLR</div>
+</div>
+<div class="absolute bottom-1/3 left-1/2 flex flex-col items-center group/pin">
+<div class="w-8 h-8 bg-emerald-500 text-white rounded-full flex items-center justify-center shadow-[0_0_15px_rgba(16,185,129,0.5)] border-2 border-white scale-90 hover:scale-110 transition-transform cursor-pointer">
+<span class="material-symbols-outlined text-sm" data-icon="park">park</span>
+</div>
+<div class="bg-slate-800 text-white text-[9px] font-bold px-2 py-0.5 rounded mt-1 opacity-0 group-hover/pin:opacity-100 transition-opacity whitespace-nowrap">Millwall Park</div>
+</div>
+<div class="absolute top-1/3 right-1/3 flex flex-col items-center group/pin">
+<div class="w-8 h-8 bg-rose-500 text-white rounded-full flex items-center justify-center shadow-[0_0_15px_rgba(244,63,94,0.5)] border-2 border-white scale-90 hover:scale-110 transition-transform cursor-pointer">
+<span class="material-symbols-outlined text-sm" data-icon="school">school</span>
+</div>
+<div class="bg-slate-800 text-white text-[9px] font-bold px-2 py-0.5 rounded mt-1 opacity-0 group-hover/pin:opacity-100 transition-opacity whitespace-nowrap">Harbour Primary</div>
+</div>
+<!-- Map Controls -->
+<div class="absolute bottom-6 right-6 flex flex-col gap-2">
+<button class="bg-slate-800/80 backdrop-blur-md p-2 rounded-lg text-white border border-slate-700 hover:bg-slate-700 transition-all">
+<span class="material-symbols-outlined text-lg" data-icon="add">add</span>
+</button>
+<button class="bg-slate-800/80 backdrop-blur-md p-2 rounded-lg text-white border border-slate-700 hover:bg-slate-700 transition-all">
+<span class="material-symbols-outlined text-lg" data-icon="remove">remove</span>
+</button>
+<button class="bg-primary p-2 rounded-lg text-white shadow-lg shadow-primary/20 mt-2">
+<span class="material-symbols-outlined text-lg" data-icon="my_location">my_location</span>
+</button>
+</div>
+<!-- Radius Indicator -->
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
+<div class="w-48 h-48 border border-primary/20 rounded-full bg-primary/5 animate-[pulse_4s_infinite]"></div>
+<div class="w-96 h-96 border border-primary/10 rounded-full absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer Shell (Full Width) -->
+<footer class="w-full py-12 px-8 bg-slate-900 dark:bg-black flex flex-col items-center gap-6 w-full md:grid md:grid-cols-3 border-t border-slate-800">
+<div class="flex flex-col items-center md:items-start">
+<div class="text-emerald-400 font-bold text-xl tracking-tight uppercase">15 MINUTE CITY</div>
+<div class="text-slate-500 text-xs mt-1">Built by <span class="font-bold text-emerald-400">Arman</span></div>
+</div>
+<div class="flex flex-wrap justify-center gap-8">
+<a class="text-sm font-medium uppercase tracking-widest text-slate-400 hover:text-emerald-300 transition-colors underline-offset-4 hover:underline" href="#">Privacy</a>
+<a class="text-sm font-medium uppercase tracking-widest text-slate-400 hover:text-emerald-300 transition-colors underline-offset-4 hover:underline" href="#">Terms</a>
+<a class="text-sm font-medium uppercase tracking-widest text-slate-400 hover:text-emerald-300 transition-colors underline-offset-4 hover:underline" href="#">Contact</a>
+</div>
+<div class="text-slate-400 text-sm font-medium uppercase tracking-widest md:text-right">
+    © 2026 15 MINUTES CITY. ALL RIGHTS RESERVED.
+  </div>
+</footer>
+<!-- FAB: Add Discovery -->
+<button class="fixed bottom-10 right-10 w-16 h-16 bg-gradient-to-br from-primary to-primary-container text-white rounded-full shadow-2xl flex items-center justify-center hover:scale-105 active:scale-95 transition-all z-50">
+<span class="material-symbols-outlined text-3xl" data-icon="add_location" style="font-variation-settings: 'FILL' 1;">add_location</span>
+</button>
+</body></html>
