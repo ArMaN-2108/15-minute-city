@@ -36,7 +36,7 @@ function App() {
       <Routes>
         <Route path="/" element={<WelcomeScreen onDataReceived={handleDataReceived} />} />
         <Route path="/dashboard" element={
-          data ? <Dashboard data={data} onReset={handleReset} /> : <WelcomeScreen onDataReceived={handleDataReceived} />
+          data ? <Dashboard data={data} onReset={handleReset} onDataReceived={handleDataReceived} /> : <WelcomeScreen onDataReceived={handleDataReceived} />
         } />
         <Route path="/about" element={<AboutUs />} />
         <Route path="/terms" element={<TermsOfService />} />

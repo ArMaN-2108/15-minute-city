@@ -12,9 +12,9 @@ L.Icon.Default.mergeOptions({
   shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
 });
 
-// Custom Icon for Centroid
+// Custom Icon for Centroid (Black for contrast)
 const centroidIcon = new L.Icon({
-  iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
+  iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-black.png',
   shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
   iconSize: [25, 41],
   iconAnchor: [12, 41],
@@ -70,10 +70,11 @@ const categoryIcons = {
 function ChangeView({ center, selectedAmenity }) {
   const map = useMap();
   useEffect(() => {
+    map.invalidateSize();
     if (selectedAmenity) {
       map.flyTo([selectedAmenity.lat, selectedAmenity.lon], 16, { duration: 1.5 });
     } else {
-      map.flyTo(center, 14, { duration: 1 });
+      map.flyTo(center, 15, { duration: 1 });
     }
   }, [center, selectedAmenity, map]);
   return null;
@@ -107,7 +108,7 @@ const Map = ({ coordinates, categories, selectedCategory, selectedAmenity }) => 
 
   return (
     <div style={{ height: '100%', minHeight: '400px', width: '100%', borderRadius: 'var(--radius-2xl)', overflow: 'hidden' }}>
-      <MapContainer center={center} zoom={14} style={{ height: '100%', width: '100%' }}>
+      <MapContainer center={center} zoom={15} style={{ height: '100%', width: '100%' }}>
         <ChangeView center={center} selectedAmenity={selectedAmenity} />
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

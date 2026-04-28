@@ -37,7 +37,6 @@ const WelcomeScreen = ({ onDataReceived }) => {
         </div>
         <div className="flex items-center gap-4">
           <button className="material-symbols-outlined text-white text-2xl hover:scale-105 transition-all">language</button>
-          <button className="bg-white text-primary px-6 py-2 rounded-full font-bold hover:scale-105 active:scale-95 transition-all shadow-lg">Sign In</button>
         </div>
       </nav>
 
@@ -145,8 +144,11 @@ const WelcomeScreen = ({ onDataReceived }) => {
       {/* Footer */}
       <footer className="w-full py-12 px-8 bg-slate-900 dark:bg-black flex flex-col items-center gap-6 md:grid md:grid-cols-3">
         <div className="flex flex-col items-center md:items-start">
+          <Link to="/">
+            <img alt="15 Minute City Logo" className="h-16 w-auto object-contain mb-2 hover:scale-105 transition-transform brightness-0 invert" src="/footer-logo.png" />
+          </Link>
           <div className="text-emerald-400 font-bold text-xl tracking-tight">15 Minute City</div>
-          <div className="text-slate-500 text-xs mt-1">Built by <a href="https://www.linkedin.com/in/arman-shk/" target="_blank" rel="noopener noreferrer" className="text-primary font-bold hover:underline">Arman</a></div>
+          <div className="text-slate-500 text-xs mt-1">Built by <a href="https://www.linkedin.com/in/arman-shk/" target="_blank" rel="noopener noreferrer" className="text-[#10b981] font-bold hover:underline">Arman</a></div>
         </div>
         <div className="flex flex-wrap justify-center gap-8">
           <Link className="text-sm font-medium uppercase tracking-widest text-slate-400 hover:text-emerald-300 transition-colors" to="/privacy">Privacy</Link>

@@ -37,24 +37,33 @@ def get_amenities_for_centroid(lat, lon):
         
     # 2. Fetch others from OpenStreetMap Overpass API
     overpass_url = "https://overpass-api.de/api/interpreter"
+    # Using nwr (node, way, relation) to capture areas (like parks/schools) as well as points.
     overpass_query = f"""
-    [out:json][timeout:15];
+    [out:json][timeout:25];
     (
-      node["shop"~"supermarket|convenience|grocery"](around:1250, {lat}, {lon});
-      node["amenity"~"hospital|clinic|doctors|pharmacy"](around:1250, {lat}, {lon});
-      node["amenity"~"school|kindergarten|college|university"](around:1250, {lat}, {lon});
-      node["leisure"~"park|garden"](around:1250, {lat}, {lon});
-      way["leisure"~"park|garden"](around:1250, {lat}, {lon});
+      nwr["shop"~"supermarket|convenience|grocery|bakery|butcher|greengrocer"](around:1250, {lat}, {lon});
+      nwr["amenity"~"hospital|clinic|doctors|pharmacy|dentist|optician"](around:1250, {lat}, {lon});
+      nwr["amenity"~"school|kindergarten|college|university|library"](around:1250, {lat}, {lon});
+      nwr["leisure"~"park|garden|playground|nature_reserve|recreation_ground"](around:1250, {lat}, {lon});
+      nwr["landuse"~"grass|recreation_ground"](around:1250, {lat}, {lon});
     );
     out center;
     """
     
     try:
-        osm_resp = requests.post(overpass_url, data={'data': overpass_query}, headers=headers, timeout=15)
+        osm_resp = requests.post(overpass_url, data={'data': overpass_query}, headers=headers, timeout=25)
         if osm_resp.status_code == 200:
             data = osm_resp.json()
             elements = data.get("elements", [])
-            print(f"DEBUG: OSM Elements Found: {len(elements)}")
+            import logging
+            logging.info(f"DEBUG: OSM Elements Found: {len(elements)}")
+            
+            # Categories for sorting
+            grocery_tags = ["supermarket", "convenience", "grocery", "bakery", "butcher", "greengrocer"]
+            health_tags = ["hospital", "clinic", "doctors", "pharmacy", "dentist", "optician"]
+            edu_tags = ["school", "kindergarten", "college", "university", "library"]
+            park_tags = ["park", "garden", "playground", "nature_reserve", "recreation_ground"]
+
             for element in elements:
                 tags = element.get("tags", {})
                 el_lat = element.get("lat") or element.get("center", {}).get("lat")
@@ -63,21 +72,27 @@ def get_amenities_for_centroid(lat, lon):
                 if el_lat is None or el_lon is None:
                     continue
                     
-                name = tags.get("name", tags.get("shop", tags.get("amenity", tags.get("leisure", "Unknown Amenity"))))
+                name = tags.get("name", tags.get("shop", tags.get("amenity", tags.get("leisure", tags.get("landuse", "Unknown Amenity")))))
                 am = {"name": name, "lat": el_lat, "lon": el_lon}
                 
-                if tags.get("shop") in ["supermarket", "convenience", "grocery"]:
+                # Check category based on tags
+                shop = tags.get("shop")
+                amenity = tags.get("amenity")
+                leisure = tags.get("leisure")
+                landuse = tags.get("landuse")
+
+                if shop in grocery_tags:
                     amenities["groceries"].append(am)
-                elif tags.get("amenity") in ["hospital", "clinic", "doctors", "pharmacy"]:
+                elif amenity in health_tags:
                     amenities["healthcare"].append(am)
-                elif tags.get("amenity") in ["school", "kindergarten", "college", "university"]:
+                elif amenity in edu_tags:
                     amenities["education"].append(am)
-                elif tags.get("leisure") in ["park", "garden"]:
+                elif leisure in park_tags or landuse in ["grass", "recreation_ground"]:
                     amenities["parks"].append(am)
             
-            print(f"DEBUG: Groceries: {len(amenities['groceries'])}, Health: {len(amenities['healthcare'])}, Education: {len(amenities['education'])}, Parks: {len(amenities['parks'])}")
+            logging.info(f"DEBUG: Groceries: {len(amenities['groceries'])}, Health: {len(amenities['healthcare'])}, Education: {len(amenities['education'])}, Parks: {len(amenities['parks'])}")
     except requests.exceptions.RequestException as e:
-        print(f"DEBUG: OSM Error: {e}")
+        logging.error(f"DEBUG: OSM Error: {e}")
         pass 
         
     return amenities

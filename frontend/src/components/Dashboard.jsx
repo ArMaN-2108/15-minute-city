@@ -1,11 +1,30 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Map from './Map';
+import { fetchScore } from '../services/api';
 
-const Dashboard = ({ data, onReset }) => {
+const Dashboard = ({ data, onReset, onDataReceived }) => {
   const { postcode, coordinates, overall_score, categories } = data;
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedAmenity, setSelectedAmenity] = useState(null);
+  const [searchPostcode, setSearchPostcode] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const handleSearch = async (e) => {
+    e.preventDefault();
+    if (!searchPostcode.trim()) return;
+    
+    setLoading(true);
+    try {
+      const newData = await fetchScore(searchPostcode);
+      onDataReceived(newData);
+      setSearchPostcode('');
+    } catch (err) {
+      alert(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const toggleCategory = (cat) => {
     setSelectedCategory(prev => prev === cat ? null : cat);
@@ -42,7 +61,7 @@ const Dashboard = ({ data, onReset }) => {
         <aside className="w-72 bg-emerald-50 dark:bg-slate-950 flex flex-col py-10 gap-2 shadow-xl z-50 overflow-y-auto">
           <div className="px-8 mb-10">
             <Link to="/">
-              <img alt="15MinCity Logo" className="h-20 w-auto mb-6 object-contain invert dark:invert-0 hover:scale-105 transition-transform" src="/logo.png" />
+              <img alt="15MinCity Logo" className="h-20 w-auto mb-6 object-contain hover:scale-105 transition-transform" src="/logo.png" />
             </Link>
           </div>
           <nav className="flex-grow flex flex-col gap-2 px-4">
@@ -63,15 +82,21 @@ const Dashboard = ({ data, onReset }) => {
           {/* TopNavBar Shell */}
           <header className="flex justify-between items-center px-8 h-20 w-full bg-emerald-50/70 backdrop-blur-xl sticky top-0 z-40 shadow-[0_20px_40px_-10px_rgba(0,33,21,0.06)]">
             <div className="flex items-center gap-6">
-              <div className="relative">
-                <span className="absolute inset-y-0 left-4 flex items-center text-on-surface-variant">
+              <form onSubmit={handleSearch} className="relative">
+                <span className="absolute inset-y-0 left-4 flex items-center text-on-surface-variant pointer-events-none">
                   <span className="material-symbols-outlined" data-icon="search">search</span>
                 </span>
-                <input className="pl-12 pr-6 py-2.5 bg-surface-container-lowest rounded-full border-none focus:ring-2 focus:ring-primary/20 w-64 text-sm font-medium transition-all" placeholder="Search District Grid..." type="text" />
-              </div>
+                <input 
+                  className="pl-12 pr-6 py-2.5 bg-surface-container-lowest rounded-full border-none focus:ring-2 focus:ring-primary/20 w-64 text-sm font-medium transition-all" 
+                  placeholder={loading ? "Analyzing..." : "Search District Grid..."} 
+                  type="text" 
+                  value={searchPostcode}
+                  onChange={(e) => setSearchPostcode(e.target.value)}
+                  disabled={loading}
+                />
+              </form>
             </div>
             <div className="flex items-center gap-4">
-              <span className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant bg-surface-container-low px-4 py-2 rounded-full">Urban Strategy Interface v2.4</span>
             </div>
           </header>
 
@@ -326,8 +351,11 @@ const Dashboard = ({ data, onReset }) => {
           {/* Footer Shell (Full Width) */}
           <footer className="w-full py-12 px-8 bg-slate-900 dark:bg-black flex flex-col items-center gap-6 md:grid md:grid-cols-3 border-t border-slate-800">
             <div className="flex flex-col items-center md:items-start">
+              <Link to="/">
+                <img alt="15 Minute City Logo" className="h-16 w-auto object-contain mb-2 hover:scale-105 transition-transform brightness-0 invert" src="/footer-logo.png" />
+              </Link>
               <div className="text-emerald-400 font-bold text-xl tracking-tight uppercase">15 MINUTE CITY</div>
-              <div className="text-slate-500 text-xs mt-1">Built by <a href="https://www.linkedin.com/in/arman-shk/" target="_blank" rel="noopener noreferrer" className="font-bold text-emerald-400 hover:underline">Arman</a></div>
+              <div className="text-slate-500 text-xs mt-1">Built by <a href="https://www.linkedin.com/in/arman-shk/" target="_blank" rel="noopener noreferrer" className="font-bold text-[#10b981] hover:underline">Arman</a></div>
             </div>
             <div className="flex flex-wrap justify-center gap-8">
               <Link className="text-sm font-medium uppercase tracking-widest text-slate-400 hover:text-emerald-300 transition-colors underline-offset-4 hover:underline" to="/privacy">Privacy</Link>

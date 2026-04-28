@@ -6,17 +6,16 @@ const AboutUs = () => {
     <>
 
 
-      <nav className="fixed top-0 w-full z-50 backdrop-blur-md bg-white/70 flex justify-between items-center px-12 h-20 border-b border-emerald-50">
+      <nav className="fixed top-0 w-full z-50 backdrop-blur-md shadow-lg flex justify-between items-center px-12 h-20" style={{ backgroundColor: '#10b981' }}>
         <Link to="/">
           <img alt="15 Minute City Logo" className="h-20 w-auto object-contain hover:scale-110 transition-transform duration-300 cursor-pointer" src="/logo.png" />
         </Link>
         <div className="hidden md:flex items-center gap-8">
           <Link className="text-emerald-50/80 hover:text-white transition-colors hover:scale-105 duration-300 font-semibold" to="/">Home</Link>
-          <Link className="text-white transition-colors hover:scale-105 duration-300 font-semibold" to="/about">About</Link>
+          <Link className="text-white border-b-2 border-white pb-1 transition-colors hover:scale-105 duration-300 font-semibold" to="/about">About</Link>
         </div>
         <div className="flex items-center gap-4">
           <button className="material-symbols-outlined text-white text-2xl hover:scale-105 transition-all">language</button>
-          <button className="bg-white text-primary px-6 py-2 rounded-full font-bold hover:scale-105 active:scale-95 transition-all shadow-lg">Sign In</button>
         </div>
       </nav>
       <main className="pt-32">
@@ -109,9 +108,11 @@ const AboutUs = () => {
             <div className="relative z-10">
               <h2 className="text-4xl font-bold mb-6">Ready to see your city?</h2>
               <p className="text-on-primary/80 mb-10 max-w-xl mx-auto text-lg">Thousands of urban planners and citizens utilize the platform to advocate for more livable streets.</p>
-              <button className="bg-surface-container-lowest text-primary px-10 py-4 rounded-full font-bold hover:scale-105 transition-transform shadow-2xl">
-                Launch Map Analytics
-              </button>
+              <Link to="/">
+                <button className="bg-surface-container-lowest text-primary px-10 py-4 rounded-full font-bold hover:scale-105 transition-transform shadow-2xl">
+                  Launch Map Analytics
+                </button>
+              </Link>
             </div>
 
             <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-400/20 rounded-full -mr-20 -mt-20 blur-3xl"></div>
@@ -122,8 +123,11 @@ const AboutUs = () => {
 
       <footer className="w-full py-12 px-8 bg-slate-900 dark:bg-black flex flex-col items-center gap-6 w-full md:grid md:grid-cols-3">
         <div className="flex flex-col items-center md:items-start">
+          <Link to="/">
+            <img alt="15 Minute City Logo" className="h-16 w-auto object-contain mb-2 hover:scale-105 transition-transform brightness-0 invert" src="/footer-logo.png" />
+          </Link>
           <div className="text-emerald-400 font-bold text-xl tracking-tight uppercase">15 MINUTE CITY</div>
-          <div className="text-slate-500 text-xs mt-1">Built by <a href="https://linkedin.com/in/arman-shk/" target="_blank" rel="noopener noreferrer" className="text-emerald-500 font-bold hover:underline">Arman</a></div>
+          <div className="text-slate-500 text-xs mt-1">Built by <a href="https://linkedin.com/in/arman-shk/" target="_blank" rel="noopener noreferrer" className="text-[#10b981] font-bold hover:underline">Arman</a></div>
         </div>
         <div className="flex flex-wrap justify-center gap-8">
           <Link className="text-sm font-medium Inter uppercase tracking-widest text-slate-400 hover:text-emerald-300 transition-colors underline-offset-4 hover:underline" to="/privacy">Privacy</Link>
