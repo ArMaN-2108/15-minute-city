@@ -9,6 +9,7 @@ const Dashboard = ({ data, onReset, onDataReceived }) => {
   const [selectedAmenity, setSelectedAmenity] = useState(null);
   const [searchPostcode, setSearchPostcode] = useState('');
   const [loading, setLoading] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const handleSearch = async (e) => {
     e.preventDefault();
@@ -56,39 +57,48 @@ const Dashboard = ({ data, onReset, onDataReceived }) => {
   return (
     <>
       {/* Main Wrapper for Sidebar + Content */}
-      <div className="flex flex-grow w-full overflow-hidden min-h-screen">
+      <div className="flex flex-col md:flex-row flex-grow w-full overflow-hidden min-h-screen">
         {/* SideNavBar Shell */}
-        <aside className="w-72 bg-emerald-50 dark:bg-slate-950 flex flex-col py-10 gap-2 shadow-xl z-50 overflow-y-auto">
-          <div className="px-8 mb-10">
-            <Link to="/">
-              <img alt="15MinCity Logo" className="h-20 w-auto mb-6 object-contain hover:scale-105 transition-transform" src="/logo.png" />
+        <aside className={`fixed inset-y-0 left-0 z-50 w-72 bg-emerald-50 dark:bg-slate-950 flex flex-col py-10 gap-2 shadow-xl overflow-y-auto transform transition-transform duration-300 md:relative md:translate-x-0 ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+          <div className="px-8 mb-10 flex justify-between items-center">
+            <Link to="/" onClick={() => setIsSidebarOpen(false)}>
+              <img alt="15MinCity Logo" className="h-20 w-auto object-contain hover:scale-105 transition-transform" src="/logo.png" />
             </Link>
+            <button onClick={() => setIsSidebarOpen(false)} className="md:hidden material-symbols-outlined text-primary">close</button>
           </div>
           <nav className="flex-grow flex flex-col gap-2 px-4">
-            <a onClick={onReset} className="flex items-center gap-4 text-on-surface-variant hover:bg-emerald-100/50 rounded-full px-6 py-4 cursor-pointer transition-all">
+            <a onClick={() => { onReset(); setIsSidebarOpen(false); }} className="flex items-center gap-4 text-on-surface-variant hover:bg-emerald-100/50 rounded-full px-6 py-4 cursor-pointer transition-all">
               <span className="material-symbols-outlined">arrow_back</span>
               <span className="font-medium text-sm">New Search</span>
             </a>
-            {/* Active Tab: Command Center */}
-            <Link className="flex items-center gap-4 bg-gradient-to-r from-primary to-primary-container text-white rounded-full px-6 py-4 shadow-lg shadow-primary/20 cursor-pointer active:brightness-90 transition-all duration-300" to="/">
+            <Link className="flex items-center gap-4 bg-gradient-to-r from-primary to-primary-container text-white rounded-full px-6 py-4 shadow-lg shadow-primary/20 cursor-pointer active:brightness-90 transition-all duration-300" to="/" onClick={() => setIsSidebarOpen(false)}>
               <span className="material-symbols-outlined" data-icon="dashboard">dashboard</span>
               <span className="font-medium text-sm">Dashboard</span>
             </Link>
           </nav>
         </aside>
 
+        {/* Mobile Sidebar Overlay */}
+        {isSidebarOpen && (
+          <div 
+            className="fixed inset-0 bg-black/50 z-40 md:hidden"
+            onClick={() => setIsSidebarOpen(false)}
+          ></div>
+        )}
+
         {/* Content Area */}
-        <div className="flex-grow flex flex-col min-w-0 overflow-y-auto">
+        <div className="flex-grow flex flex-col min-w-0 overflow-y-auto h-screen">
           {/* TopNavBar Shell */}
-          <header className="flex justify-between items-center px-8 h-20 w-full bg-emerald-50/70 backdrop-blur-xl sticky top-0 z-40 shadow-[0_20px_40px_-10px_rgba(0,33,21,0.06)]">
-            <div className="flex items-center gap-6">
+          <header className="flex justify-between items-center px-4 md:px-8 h-20 w-full bg-emerald-50/70 backdrop-blur-xl sticky top-0 z-40 shadow-[0_20px_40px_-10px_rgba(0,33,21,0.06)]">
+            <div className="flex items-center gap-4 md:gap-6">
+              <button onClick={() => setIsSidebarOpen(true)} className="md:hidden material-symbols-outlined text-primary p-2">menu</button>
               <form onSubmit={handleSearch} className="relative">
                 <span className="absolute inset-y-0 left-4 flex items-center text-on-surface-variant pointer-events-none">
                   <span className="material-symbols-outlined" data-icon="search">search</span>
                 </span>
                 <input 
-                  className="pl-12 pr-6 py-2.5 bg-surface-container-lowest rounded-full border-none focus:ring-2 focus:ring-primary/20 w-64 text-sm font-medium transition-all" 
-                  placeholder={loading ? "Analyzing..." : "Search District Grid..."} 
+                  className="pl-10 md:pl-12 pr-4 md:pr-6 py-2.5 bg-surface-container-lowest rounded-full border-none focus:ring-2 focus:ring-primary/20 w-48 md:w-64 text-xs md:text-sm font-medium transition-all" 
+                  placeholder={loading ? "Analyzing..." : "Search District..."} 
                   type="text" 
                   value={searchPostcode}
                   onChange={(e) => setSearchPostcode(e.target.value)}
@@ -97,6 +107,9 @@ const Dashboard = ({ data, onReset, onDataReceived }) => {
               </form>
             </div>
             <div className="flex items-center gap-4">
+              <Link to="/" onClick={onReset}>
+                <img alt="Logo" src="/logo.png" className="md:hidden h-10 w-auto" />
+              </Link>
             </div>
           </header>
 

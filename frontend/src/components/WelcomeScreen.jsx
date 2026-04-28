@@ -6,6 +6,7 @@ const WelcomeScreen = ({ onDataReceived }) => {
   const [postcode, setPostcode] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -27,17 +28,35 @@ const WelcomeScreen = ({ onDataReceived }) => {
   return (
     <>
       {/* TopNavBar */}
-      <nav className="fixed top-0 w-full z-50 backdrop-blur-xl shadow-2xl shadow-emerald-900/10 flex justify-between items-center px-8 h-20 max-w-none" style={{ backgroundColor: '#10b981' }}>
-        <Link to="/">
-          <img alt="15 Minute City Logo" className="h-20 w-auto object-contain hover:scale-110 transition-transform duration-300 cursor-pointer" src="/logo.png" />
+      <nav className="fixed top-0 w-full z-50 backdrop-blur-xl shadow-2xl shadow-emerald-900/10 flex justify-between items-center px-4 md:px-8 h-20 max-w-none" style={{ backgroundColor: '#10b981' }}>
+        <Link to="/" onClick={() => setIsMenuOpen(false)}>
+          <img alt="15 Minute City Logo" className="h-16 md:h-20 w-auto object-contain hover:scale-110 transition-transform duration-300 cursor-pointer" src="/logo.png" />
         </Link>
         <div className="hidden md:flex items-center gap-8">
           <Link className="text-white font-bold border-b-2 border-white pb-1 hover:scale-105 transition-all duration-300" to="/">Home</Link>
           <Link className="text-emerald-50/80 hover:text-white transition-colors hover:scale-105 duration-300" to="/about">About</Link>
+          <Link className="text-emerald-50/80 hover:text-white transition-colors hover:scale-105 duration-300" to="/contact">Contact</Link>
         </div>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2 md:gap-4">
           <button className="material-symbols-outlined text-white text-2xl hover:scale-105 transition-all">language</button>
+          <button 
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            className="md:hidden material-symbols-outlined text-white text-3xl p-1"
+          >
+            {isMenuOpen ? 'close' : 'menu'}
+          </button>
         </div>
+
+        {/* Mobile Menu Overlay */}
+        {isMenuOpen && (
+          <div className="fixed inset-0 top-20 bg-emerald-600 z-40 md:hidden flex flex-col p-8 gap-6 animate-fade-in-up">
+            <Link className="text-white text-2xl font-bold border-b border-white/20 pb-4" to="/" onClick={() => setIsMenuOpen(false)}>Home</Link>
+            <Link className="text-emerald-50 text-2xl font-bold border-b border-white/20 pb-4" to="/about" onClick={() => setIsMenuOpen(false)}>About</Link>
+            <Link className="text-emerald-50 text-2xl font-bold border-b border-white/20 pb-4" to="/contact" onClick={() => setIsMenuOpen(false)}>Contact</Link>
+            <Link className="text-emerald-50 text-2xl font-bold border-b border-white/20 pb-4" to="/terms" onClick={() => setIsMenuOpen(false)}>Terms</Link>
+            <Link className="text-emerald-50 text-2xl font-bold border-b border-white/20 pb-4" to="/privacy" onClick={() => setIsMenuOpen(false)}>Privacy</Link>
+          </div>
+        )}
       </nav>
 
       {/* Main Content Canvas */}
@@ -50,29 +69,29 @@ const WelcomeScreen = ({ onDataReceived }) => {
 
         <section className="relative z-10 w-full max-w-4xl text-center flex flex-col items-center">
           {/* Icon Cluster (The Urban Pulse) */}
-          <div className="flex gap-4 mb-10 overflow-x-auto pb-4 no-scrollbar max-w-full justify-center">
-            <div className="flex items-center justify-center w-16 h-16 rounded-2xl bg-surface-container-lowest shadow-xl shadow-primary/5 text-primary hover:scale-110 transition-transform cursor-default">
-              <span className="material-symbols-outlined text-3xl">location_pin</span>
+          <div className="flex gap-3 md:gap-4 mb-10 overflow-x-auto pb-4 scrollbar-hide max-w-full justify-start md:justify-center px-4">
+            <div className="flex-shrink-0 flex items-center justify-center w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-surface-container-lowest shadow-xl shadow-primary/5 text-primary hover:scale-110 transition-transform cursor-default">
+              <span className="material-symbols-outlined text-2xl md:text-3xl">location_pin</span>
             </div>
-            <div className="flex items-center justify-center w-16 h-16 rounded-2xl bg-surface-container-lowest shadow-xl shadow-primary/5 text-primary hover:scale-110 transition-transform cursor-default">
-              <span className="material-symbols-outlined text-3xl">train</span>
+            <div className="flex-shrink-0 flex items-center justify-center w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-surface-container-lowest shadow-xl shadow-primary/5 text-primary hover:scale-110 transition-transform cursor-default">
+              <span className="material-symbols-outlined text-2xl md:text-3xl">train</span>
             </div>
-            <div className="flex items-center justify-center w-16 h-16 rounded-2xl bg-surface-container-lowest shadow-xl shadow-primary/5 text-primary hover:scale-110 transition-transform cursor-default">
-              <span className="material-symbols-outlined text-3xl">shopping_cart</span>
+            <div className="flex-shrink-0 flex items-center justify-center w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-surface-container-lowest shadow-xl shadow-primary/5 text-primary hover:scale-110 transition-transform cursor-default">
+              <span className="material-symbols-outlined text-2xl md:text-3xl">shopping_cart</span>
             </div>
-            <div className="flex items-center justify-center w-16 h-16 rounded-2xl bg-surface-container-lowest shadow-xl shadow-primary/5 text-primary hover:scale-110 transition-transform cursor-default">
-              <span className="material-symbols-outlined text-3xl">child_hat</span>
+            <div className="flex-shrink-0 flex items-center justify-center w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-surface-container-lowest shadow-xl shadow-primary/5 text-primary hover:scale-110 transition-transform cursor-default">
+              <span className="material-symbols-outlined text-2xl md:text-3xl">child_hat</span>
             </div>
-            <div className="flex items-center justify-center w-16 h-16 rounded-2xl bg-surface-container-lowest shadow-xl shadow-primary/5 text-primary hover:scale-110 transition-transform cursor-default">
-              <span className="material-symbols-outlined text-3xl">pin</span>
+            <div className="flex-shrink-0 flex items-center justify-center w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-surface-container-lowest shadow-xl shadow-primary/5 text-primary hover:scale-110 transition-transform cursor-default">
+              <span className="material-symbols-outlined text-2xl md:text-3xl">123</span>
             </div>
           </div>
 
           {/* Typography Hierarchy (Editorial Authority) */}
-          <h1 className="text-5xl md:text-7xl font-bold text-on-surface tracking-tight mb-6 leading-tight">
+          <h1 className="text-4xl md:text-7xl font-bold text-on-surface tracking-tight mb-6 leading-tight">
             Find your <span className="text-primary italic">15 Minute</span> City
           </h1>
-          <p className="text-xl md:text-2xl text-on-surface-variant font-medium max-w-2xl mb-12">
+          <p className="text-lg md:text-2xl text-on-surface-variant font-medium max-w-2xl mb-12">
             Enter your postcode to check your local livability score. Discover how accessible your world is on foot.
           </p>
 
@@ -129,10 +148,10 @@ const WelcomeScreen = ({ onDataReceived }) => {
         </section>
 
         {/* Visual Anchor (Map Concept) */}
-        <div className="mt-24 w-full max-w-5xl h-96 rounded-xl overflow-hidden shadow-inner-xl bg-surface-container-highest relative">
+        <div className="mt-24 w-full max-w-5xl h-64 md:h-96 rounded-xl overflow-hidden shadow-inner-xl bg-surface-container-highest relative">
           <img alt="Modern urban landscape with greenery" className="w-full h-full object-cover opacity-60 mix-blend-multiply grayscale hover:grayscale-0 transition-all duration-1000" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDBvi98iXwi45EauPd5jpnT7Ci3Is7Tp09UCLYiJ7XJcOfopv-XbdAFIoY9-25EkJNhfegKaLfADSnQNkPcbxUiNLTe8gxb-GuC-wAPVjGeNmo6uW8jNk8YIZBB5u7Hf97Vfk6D4jq-kYNMIEmZRRCVCemnHgmLcKL4Mk2E9QzYAuUg-Pae3U9rP3mtBIJMgrSkOHhJl6xDMcghhzuvtj4Ros_TVAXlxSLIPQmYAd8yvTCalDewSMv9gJ-7vD0eYA3RuiXOXAF1Sd0" />
           <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent"></div>
-          <div className="absolute bottom-8 left-12">
+          <div className="absolute bottom-8 left-6 md:left-12">
             <div className="inline-flex items-center gap-2 bg-white/80 backdrop-blur-md px-4 py-2 rounded-full text-primary font-bold shadow-lg">
               <span className="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
               Live Urban Data Processing
@@ -147,7 +166,7 @@ const WelcomeScreen = ({ onDataReceived }) => {
           <Link to="/">
             <img alt="15 Minute City Logo" className="h-16 w-auto object-contain mb-2 hover:scale-105 transition-transform brightness-0 invert" src="/footer-logo.png" />
           </Link>
-          <div className="text-emerald-400 font-bold text-xl tracking-tight">15 Minute City</div>
+          <div className="text-emerald-400 font-bold text-xl tracking-tight uppercase">15 Minute City</div>
           <div className="text-slate-500 text-xs mt-1">Built by <a href="https://www.linkedin.com/in/arman-shk/" target="_blank" rel="noopener noreferrer" className="text-[#10b981] font-bold hover:underline">Arman</a></div>
         </div>
         <div className="flex flex-wrap justify-center gap-8">
@@ -161,6 +180,6 @@ const WelcomeScreen = ({ onDataReceived }) => {
       </footer>
     </>
   );
-};
+};;
 
 export default WelcomeScreen;
