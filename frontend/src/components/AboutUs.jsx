@@ -160,4 +160,4 @@ const AboutUs = () => {
   );
 };
 
-export default AboutUs;utUs;
+export default AboutUs;
